@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家庭総合 テスト対策完全版（食生活 & 高齢者）</title>
+    <style>
+        :root {
+            --primary-color: #1b5e20;
+            --secondary-color: #4caf50;
+            --accent-color: #e8f5e9;
+            --text-color: #2c3e50;
+            --bg-color: #f8f9fa;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+        }
+        header p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 950px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        /* 単元フィルター */
+        .filter-box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        .filter-btn {
+            background-color: #e0e0e0;
+            border: none;
+            color: #333;
+            padding: 8px 16px;
+            margin: 3px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        /* モード切り替えタブ */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .section.active {
+            display: block;
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+        h3 {
+            color: #2e7d32;
+            margin-top: 25px;
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 10px;
+        }
+        /* クイズカード */
+        .quiz-card {
+            background: var(--accent-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c8e6c9;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .options button:hover:not(:disabled) {
+            background: #f1f8e9;
+        }
+        .options button.correct {
+            background: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .options button.incorrect {
+            background: #ffcdd2 !important;
+            border-color: #f44336;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 12px;
+            background: #fff;
+            border-left: 4px solid var(--primary-color);
+            display: none;
+            border-radius: 4px;
+        }
+        /* フラッシュカード */
+        .flashcard-container {
+            perspective: 1000px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .flashcard {
+            width: 100%;
+            min-height: 220px;
+            background: white;
+            border: 2px dashed var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 1.15rem;
+            cursor: pointer;
+            box-sizing: border-box;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .fc-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .score-box {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 10px;
+            font-size: 0.9rem;
+        }
+        th {
+            background-color: #e8f5e9;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>家庭総合 テスト対策学習サイト</h1>
+    <p>「食生活の安全」＆「高齢社会と介護」完全網羅版</p>
+</header>
+
+<div class="container">
+    <!-- 単元選択フィルター -->
+    <div class="filter-box">
+        <div class="filter-title">🎯 出題・学習エリアを選択</div>
+        <button class="filter-btn active" onclick="setCategory('all')">🌀 ミックス（全単元）</button>
+        <button class="filter-btn" onclick="setCategory('food')">🍱 1. 食の選び方と安全</button>
+        <button class="filter-btn" onclick="setCategory('elderly')">👵 2. 高齢社会と生活・介護</button>
+    </div>
+
+    <!-- モード切り替えタブ -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('summary')">1. 重要ポイント要約</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">2. 4択・記述クイズ</button>
+        <button class="tab-btn" onclick="switchTab('ox')">3. 〇×チェック</button>
+        <button class="tab-btn" onclick="switchTab('flashcard')">4. 暗記カード</button>
+    </div>
+
+    <!-- セクション 1: まとめ -->
+    <div id="summary" class="section active">
+        <h2>📚 授業スライド全内容まとめ</h2>
+        
+        <div id="summary-food">
+            <h3>🍱 【単元1】食の選び方と安全</h3>
+            <p><b>1. 食品の選び方</b></p>
+            <ul>
+                <li>五感での選択と旬の食材（低価格、高栄養価・美味しい、環境負荷が少ない）[cite: 23]。季節による成分変動（ほうれん草のビタミンC、かつおの脂質）[cite: 23]。</li>
+                <li>生産エネルギー：トマト（冬春どり温室加温：11,948kcal／光熱・動力90%）は露地等に比べ環境負荷大[cite: 24]。</li>
+                <li><b>食品表示法</b>：生鮮食品（名称・原産地）[cite: 25]、加工食品（名称・原材料・内容量・消費/賞味期限・保存方法・製造者等）[cite: 25, 27]。原材料名は食品添加物以外と添加物を分け、それぞれ<b>多く含まれる順</b>に記載[cite: 25, 27]。</li>
+                <li><b>アレルギー物質（表示義務8品目）</b>：えび、かに、くるみ、小麦、そば、卵、乳、落花生[cite: 29]。アナフィラキシーショック等のリスク[cite: 29]。</li>
+            </ul>
+            <p><b>2. 食品の保存と期限</b></p>
+            <ul>
+                <li><b>消費期限</b>：傷みやすい食品（弁当など）の安全性の限界[cite: 28, 30]。<b>賞味期限</b>：傷みにくい食品（スナック・牛乳・缶詰）のおいしさの限界[cite: 28, 30]。</li>
+                <li><b>冷蔵庫の温度帯</b>：冷蔵室（約4℃）、パーシャル室（約-3℃/肉魚）、チルド室（約0℃/乳製品・練り物）、冷凍室（約-20℃）、野菜室（約16℃/高湿度・エチレンガスカット）[cite: 31]。</li>
+                <li><b>保存方法（微生物抑止）</b>：乾燥（切干大根・干物）、発酵（納豆・チーズ）、燻煙（ベーコン）、塩漬け（塩辛）、砂糖漬け（ジャム）、酢漬け（ピクルス）[cite: 32]。</li>
+            </ul>
+            <p><b>3. 食品の安全と衛生</b></p>
+            <ul>
+                <li><b>食中毒統計（令和5年）</b>：事件数1位は<b>寄生虫</b>（44.7%）、患者数1位は<b>ウイルス</b>（5,530人）[cite: 34]。細菌性は初夏〜初秋、ノロウイルスは冬季に増加[cite: 35]。</li>
+                <li><b>アニサキス予防</b>：冷凍（-20℃で24時間以上）または加熱（70℃以上、または60℃で1分間）[cite: 36]。</li>
+                <li><b>HACCP（ハサップ）</b>：従来の抜取検査に対し、工程全体の温度・時間・異物検出を継続監視・記録する衛生管理手法[cite: 37]。</li>
+                <li><b>食中毒予防3原則</b>：<b>つけない・増やさない・やっつける</b>[cite: 39, 40]。</li>
+                <li><b>食品添加物</b>：指定添加物以外は禁止[cite: 41]。メリット（味・見た目・保存性向）[cite: 42]、デメリット（塩分糖分過剰、長期的・複合摂取の健康被害不明）[cite: 43]。</li>
+            </ul>
+        </div>
+
+        <div id="summary-elderly">
+            <h3>👵 【単元2】高齢社会に生きる・高齢者の生活と介護</h3>
+            <p><b>1. 高齢社会の現状と課題</b></p>
+            <ul>
+                <li>平均寿命（2023年）：男性81歳、女性87歳[cite: 44]。高齢化率（65歳以上）：<b>29.1%</b>、75歳以上：<b>16.1%</b>[cite: 44]。</li>
+                <li>高齢化の分類：7%以上＝高齢化社会、14%以上＝高齢社会、21%以上＝<b>超高齢社会</b>（日本は超高齢社会）[cite: 45]。</li>
+                <li>世帯：高齢者単独・夫婦のみ世帯が増加し小規模化[cite: 46, 47]。生産年齢人口比率の低下（1965年 9.1人 → 2025年 2.0人 → 2050年 1.0人で1人を支える）[cite: 48]。</li>
+                <li>健康寿命と平均寿命の差は約<b>10年</b>（日常的に介護が必要な期間）[cite: 49]。</li>
+                <li>高齢者の3つの不安：<b>健康・お金・孤独</b>[cite: 50]。消費者トラブル（だまされたことに気づきにくい、誰にも言わない）[cite: 50]、事故（転倒・転落の57.7%は自宅で発生[cite: 58]、高齢ドライバー死亡事故の原因はブレーキとアクセルの踏み違い7.0%[cite: 52]や操作不適28%[cite: 52]など衰えが影響[cite: 52]）。免許返納はピーク時57万件から4年連続減少[cite: 53]。</li>
+            </ul>
+            <p><b>2. 高齢者の心身の変化と特徴</b></p>
+            <ul>
+                <li>身体：骨粗しょう症（背骨・手首・足のつけ根など骨折しやすい）[cite: 55, 56]。要介護原因5位は転倒・骨折（1位脳血管障害、2位認知症）[cite: 57]。味覚閾値の上昇（特に<b>塩味</b>を感じにくくなり高血圧リスク）[cite: 55, 60]。動脈硬化（脳梗塞・心筋梗塞）[cite: 55, 61]。</li>
+                <li>知能：<b>流動性知能</b>（直感・処理スピード・記憶・計算等）は低下しやすいが、<b>結晶性知能</b>（言語能力・理解力・判断力・洞察力等）は維持される[cite: 63]。</li>
+                <li>感覚体験：白内障（黄白色に見える・視力低下）[cite: 59, 87]、聴力（高音・電子音・チャイムが聞こえにくい、正面からゆっくり話す）[cite: 89, 90]。</li>
+                <li>認知症への接し方：話す前に名前を呼ぶ、短くわかりやすく、表情に着目、本人のこれまでを重んじる[cite: 64]。</li>
+            </ul>
+            <p><b>3. 社会保障・年金・介護制度</b></p>
+            <ul>
+                <li><b>社会保障（憲法第25条）</b>：3つの機能（生活安定・向上、所得再分配、経済安定）[cite: 73]。5つの社会保険（年金・医療・雇用・介護・労災）[cite: 75]。</li>
+                <li><b>公的年金（3階建て構造）</b>：1階＝国民年金（20〜60歳全員）[cite: 77]、2階＝厚生年金（会社員等）[cite: 77]、3階＝iDeCo・企業年金等[cite: 77]。受給は原則65歳から[cite: 76]。老齢基礎年金満額は年間約81.6万円（令和6年度）[cite: 79]。特例：学生納付特例制度、免除・猶予制度[cite: 78, 79]。産休・育休中は厚生年金保険料免除（将来の受給額に影響なし）[cite: 80]。老後最低生活費は月20〜25万円[cite: 68]。</li>
+                <li><b>介護と生活</b>：ADL（日常生活動作：食事・排泄・更衣・移動）[cite: 92]、QOL（生活の質・満足度）[cite: 93]。着脱衣の介護原則：<b>着患脱健</b>（麻痺のある患側から着せ、健側から脱がせる）[cite: 85]。呼称は「鈴木さん」など氏名で呼ぶ[cite: 85]。</li>
+                <li><b>介護保険制度</b>：実施主体は<b>市区町村</b>、被保険者は<b>40歳以上</b>[cite: 96]。利用料は1〜3割負担[cite: 98]。要支援1〜2（地域包括支援センターで計画）[cite: 97]、要介護1〜5（ケアマネジャーとケアプラン作成）[cite: 97]。</li>
+                <li>課題：介護離職（年間約10.6万人、75%が女性）[cite: 95]、ヤングケアラー、ダブルケアラー、老老介護、認認介護、孤独死[cite: 67, 71]。育児・介護休業法の活用[cite: 95]。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- セクション 2: クイズ -->
+    <div id="quiz" class="section">
+        <h2>📝 実戦 4択・記述クイズ</h2>
+        <div id="quiz-container"></div>
+        <button class="btn" onclick="initQuiz()">この単元のクイズをやり直す</button>
+    </div>
+
+    <!-- セクション 3: 〇×判定 -->
+    <div id="ox" class="section">
+        <h2>⭕❌ 正誤判定（〇×）テスト</h2>
+        <div id="ox-container"></div>
+        <button class="btn" onclick="initOX()">この単元のテストをやり直す</button>
+    </div>
+
+    <!-- セクション 4: 暗記カード -->
+    <div id="flashcard" class="section">
+        <h2>🃏 暗記フラッシュカード</h2>
+        <p style="text-align:center; color:#666;">カードをクリックすると「答え・詳細解説」が表示されます。</p>
+        <div class="flashcard-container">
+            <div class="flashcard" id="fc-card" onclick="flipCard()">
+                <div id="fc-tag" class="tag">全単元</div>
+                <div id="fc-text">読み込み中...</div>
+            </div>
+        </div>
+        <div class="fc-controls">
+            <button class="btn" onclick="prevCard()">前のカード</button>
+            <button class="btn" onclick="nextCard()">次のカード</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentCategory = 'all';
+
+    function setCategory(cat) {
+        currentCategory = cat;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        // まとめ表示の切り替え
+        const foodSummary = document.getElementById('summary-food');
+        const elderlySummary = document.getElementById('summary-elderly');
+        if(cat === 'all') {
+            foodSummary.style.display = 'block';
+            elderlySummary.style.display = 'block';
+        } else if(cat === 'food') {
+            foodSummary.style.display = 'block';
+            elderlySummary.style.display = 'none';
+        } else {
+            foodSummary.style.display = 'none';
+            elderlySummary.style.display = 'block';
+        }
+
+        // 各モードのリセット・再読み込み
+        initQuiz();
+        initOX();
+        currentCardIndex = 0;
+        updateFlashcard();
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // --- 4択クイズデータ ---
+    const allQuizData = [
+        // 食単元
+        {
+            cat: 'food',
+            q: "旬の食材を選ぶメリットとして間違っているものはどれか？",
+            options: ["出荷量が多いため低価格", "栄養価が高くおいしい", "環境への負荷が少ない", "保存性が高まり腐らなくなる"],
+            ans: 3,
+            exp: "旬の食材は低価格・高栄養価・低環境負荷ですが、腐らなくなるわけではありません。"
+        },
+        {
+            cat: 'food',
+            q: "食品表示法で義務付けられている「表示義務8品目」に含まれるものはどれか？",
+            options: ["大豆", "くるみ", "りんご", "豚肉"],
+            ans: 1,
+            exp: "表示義務化8品目は「えび・かに・くるみ・小麦・そば・卵・乳・落花生」です。くるみが含まれます。"
+        },
+        {
+            cat: 'food',
+            q: "冷蔵庫の「パーシャル室」の一般的な温度設定はどれか？",
+            options: ["約4℃", "約-3℃", "約0℃", "約16℃"],
+            ans: 1,
+            exp: "パーシャル室は約-3℃（肉・魚用）。冷蔵室は約4℃、チルド室は約0℃、野菜室は約16℃です。"
+        },
+        {
+            cat: 'food',
+            q: "令和5年厚生労働省食中毒統計で「患者数」が最も多かった原因はどれか？",
+            options: ["寄生虫", "細菌", "ウイルス", "植物性自然毒"],
+            ans: 2,
+            exp: "患者数は「ウイルス」が1位（5,530人）。なお、事件数1位は「寄生虫」です。"
+        },
+        {
+            cat: 'food',
+            q: "寄生虫アニサキスの殺菌予防策として正しい加熱条件はどれか？",
+            options: ["50℃で10秒", "60℃で1分間（または70℃以上）", "40℃で5分間", "100℃で10分以上"],
+            ans: 1,
+            exp: "アニサキスは70℃以上、または60℃なら1分間の加熱、または-20℃で24時間以上の冷凍で予防できます。"
+        },
+        // 高齢者単元
+        {
+            cat: 'elderly',
+            q: "総人口に占める65歳以上人口の割合がいくら以上になると「超高齢社会」と呼ばれるか？",
+            options: ["7%以上", "14%以上", "21%以上", "30%以上"],
+            ans: 2,
+            exp: "7%以上＝高齢化社会、14%以上＝高齢社会、21%以上＝超高齢社会です。日本は超高齢社会です。"
+        },
+        {
+            cat: 'elderly',
+            q: "加齢に伴い低下しやすい知能（直感力・処理スピード・記憶力など）を何と呼ぶか？",
+            options: ["結晶性知能", "流動性知能", "言語性知能", "感情知能"],
+            ans: 1,
+            exp: "経験や学習による「結晶性知能」は維持されますが、直感や処理スピードに関する「流動性知能」は低下します。"
+        },
+        {
+            cat: 'elderly',
+            q: "高齢者の加齢に伴う味覚変化で、特に感じにくくなり塩分過剰摂取につながりやすい味はどれか？",
+            options: ["甘味", "酸味", "塩味", "苦味"],
+            ans: 2,
+            exp: "高齢者は特に「塩味」の閾値が上がり感じにくくなるため、濃い味付けを好んで高血圧になるリスクがあります。"
+        },
+        {
+            cat: 'elderly',
+            q: "麻痺などのある高齢者に着替え（着脱衣）を行う際の原則はどれか？",
+            options: ["着健脱患", "着患脱健", "着患脱患", "着健脱健"],
+            ans: 1,
+            exp: "「着患脱健（ちゃっかんだっけん）」：着せるときは不自由な患側から、脱がせるときは自由な健側からです。"
+        },
+        {
+            cat: 'elderly',
+            q: "公的年金制度において、20歳以上60歳未満のすべての人が加入する「1階部分」の年金はどれか？",
+            options: ["厚生年金", "国民年金（基礎年金）", "iDeCo", "企業年金"],
+            ans: 1,
+            exp: "1階部分全全員共通が「国民年金（基礎年金）」、2階が会社員の「厚生年金」、3階が任意加入の私的年金です。"
+        },
+        {
+            cat: 'elderly',
+            q: "介護保険制度の実施主体（保険者）はどこか？",
+            options: ["国（厚生労働省）", "都道府県", "市区町村", "日本年金機構"],
+            ans: 2,
+            exp: "介護保険制度の保険者は「市区町村」です。40歳以上の人が被保険者となります。"
+        }
+    ];
+
+    function initQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        const list = allQuizData.filter(item => currentCategory === 'all' || item.cat === currentCategory);
+
+        if(list.length === 0) {
+            container.innerHTML = '<p>該当するクイズがありません。</p>';
+            return;
+        }
+
+        list.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            const catLabel = q.cat === 'food' ? '🍱 食の安全' : '👵 高齢者';
+            card.innerHTML = `<span class="tag">${catLabel}</span><p><b>Q${index+1}. ${q.q}</b></p>`;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+
+            q.options.forEach((opt, optIndex) => {
+                const btn = document.createElement('button');
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    const buttons = optionsDiv.querySelectorAll('button');
+                    buttons.forEach(b => b.disabled = true);
+                    const exp = card.querySelector('.explanation');
+                    exp.style.display = 'block';
+
+                    if(optIndex === q.ans) {
+                        btn.classList.add('correct');
+                        exp.innerHTML = '<b>正解！</b><br>' + q.exp;
+                    } else {
+                        btn.classList.add('incorrect');
+                        buttons[q.ans].classList.add('correct');
+                        exp.innerHTML = '<b>不正解…</b><br>' + q.exp;
+                    }
+                };
+                optionsDiv.appendChild(btn);
+            });
+
+            card.appendChild(optionsDiv);
+            const expDiv = document.createElement('div');
+            expDiv.className = 'explanation';
+            card.appendChild(expDiv);
+            container.appendChild(card);
+        });
+    }
+
+    // --- 〇×テストデータ ---
+    const allOXData = [
+        { cat: 'food', q: "加工食品の原材料名は、食品添加物以外の原材料と添加物を合わせ、重量の重い（多い）順に記載する。", ans: true, exp: "正しい記述です。" },
+        { cat: 'food', q: "賞味期限は、品質が速やかに劣化する食品（お弁当等）に表示される安全性の限界である。", ans: false, exp: "傷みやすいお弁当などに表示されるのは「消費期限」です。" },
+        { cat: 'food', q: "HACCP（ハサップ）は、最終製品の抜取検査のみで安全性を確認する従来の管理方式である。", ans: false, exp: "HACCPは工程全体の温度・時間管理や異物検出を継続監視・記録する管理方式です。" },
+        { cat: 'elderly', q: "日本の2023年時点の高齢化率（65歳以上人口割合）は29.1%である。", ans: true, exp: "正しい記述です。75歳以上割合は16.1%です。" },
+        { cat: 'elderly', q: "高齢者の転倒・転落事故の半数以上（57.7%）は自宅居住空間で起きている。", ans: true, exp: "正しい記述です。屋外よりも自宅内での事故が多く注意が必要です。" },
+        { cat: 'elderly', q: "産休・育休中に厚生年金保険料の免除手続きを行っても、将来の年金額が減額されることはない。", ans: true, exp: "正しい記述です。免除期間中も納めたものとして年金額に反映されます。" },
+        { cat: 'elderly', q: "介護保険の要介護認定で「要介護1〜5」と判定された場合、地域包括支援センターがケアプランを作成する。", ans: false, exp: "要介護1〜5は「ケアマネジャー」が居宅サービス計画を立てます（要支援1〜2が地域包括支援センター）。" }
+    ];
+
+    function initOX() {
+        const container = document.getElementById('ox-container');
+        container.innerHTML = '';
+        const list = allOXData.filter(item => currentCategory === 'all' || item.cat === currentCategory);
+
+        if(list.length === 0) {
+            container.innerHTML = '<p>該当する〇×問題がありません。</p>';
+            return;
+        }
+
+        list.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            const catLabel = item.cat === 'food' ? '🍱 食の安全' : '👵 高齢者';
+            card.innerHTML = `
+                <span class="tag">${catLabel}</span>
+                <p><b>問${index+1}. ${item.q}</b></p>
+                <div class="options">
+                    <button onclick="checkOX(this, true, ${item.ans}, '${item.exp}')">⭕（正しい）</button>
+                    <button onclick="checkOX(this, false, ${item.ans}, '${item.exp}')">❌（間違い）</button>
+                </div>
+                <div class="explanation"></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function checkOX(btn, userAns, correctAns, expText) {
+        const parent = btn.parentElement;
+        parent.querySelectorAll('button').forEach(b => b.disabled = true);
+        const card = parent.parentElement;
+        const expDiv = card.querySelector('.explanation');
+        expDiv.style.display = 'block';
+
+        if(userAns === correctAns) {
+            btn.classList.add('correct');
+            expDiv.innerHTML = '<b>正解！</b><br>' + expText;
+        } else {
+            btn.classList.add('incorrect');
+            expDiv.innerHTML = '<b>不正解…</b><br>' + expText;
+        }
+    }
+
+    // --- フラッシュカードデータ ---
+    const allFlashcards = [
+        { cat: 'food', q: "食品表示：加工食品の原材料名と食品添加物の表示順ルールは？", a: "それぞれ「多く含まれる順（重量順）」に記載する。" },
+        { cat: 'food', q: "アレルギー表示義務化の8品目をすべて答えよ。", a: "えび、かに、くるみ、小麦、そば、卵、乳、落花生" },
+        { cat: 'food', q: "食中毒統計：令和5年の「事件数1位」と「患者数1位」の原因は？", a: "事件数1位：寄生虫（44.7%）<br>患者数1位：ウイルス（ノロウイルス等/5,530人）" },
+        { cat: 'food', q: "アニサキスの予防法（冷凍・加熱の条件）は？", a: "冷凍：-20℃で24時間以上<br>加熱：70℃以上、または60℃で1分間" },
+        { cat: 'elderly', q: "高齢化率による分類（7%, 14%, 21%）の名称と、日本の現状は？", a: "7%以上：高齢化社会<br>14%以上：高齢社会<br>21%以上：超高齢社会<br>※日本は29.1%で「超高齢社会」" },
+        { cat: 'elderly', q: "結晶性知能と流動性知能の違いは？", a: "結晶性知能：経験・学習による能力（言語・判断等）。加齢でも維持されやすい。<br>流動性知能：直感・処理速度・記憶等。加齢で低下しやすい。" },
+        { cat: 'elderly', q: "公的年金の1階・2階・3階の構造は？", a: "1階：国民年金（基礎年金・全員）<br>2階：厚生年金（会社員等）<br>3階：iDeCo・企業年金（任意）" },
+        { cat: 'elderly', q: "介護の基本ルール「着脱衣の原則」と「適切な呼び方」は？", a: "着脱衣：着患脱健（患側から着せ、健側から脱がせる）<br>呼び方：「鈴木さん」など氏名で呼ぶ（おじいさん・おばあさんはNG）" },
+        { cat: 'elderly', q: "ADLとQOLの意味は？", a: "ADL：日常生活動作（食事・排泄・移動など基本動作）<br>QOL：生活の質（人生の満足度・幸福感）" }
+    ];
+
+    let currentCardIndex = 0;
+    let isFlipped = false;
+
+    function getFilteredFlashcards() {
+        return allFlashcards.filter(item => currentCategory === 'all' || item.cat === currentCategory);
+    }
+
+    function updateFlashcard() {
+        const list = getFilteredFlashcards();
+        const fcText = document.getElementById('fc-text');
+        const fcTag = document.getElementById('fc-tag');
+
+        if(list.length === 0) {
+            fcText.innerHTML = "該当するカードがありません。";
+            fcTag.innerText = "なし";
+            return;
+        }
+
+        isFlipped = false;
+        const card = list[currentCardIndex];
+        fcTag.innerText = card.cat === 'food' ? '🍱 食の安全' : '👵 高齢者';
+        fcText.innerHTML = `<b>【問題 ${currentCardIndex+1} / ${list.length}】</b><br><br>` + card.q;
+    }
+
+    function flipCard() {
+        const list = getFilteredFlashcards();
+        if(list.length === 0) return;
+
+        const fcText = document.getElementById('fc-text');
+        if(!isFlipped) {
+            fcText.innerHTML = `<b>【答え】</b><br><br>` + list[currentCardIndex].a;
+            isFlipped = true;
+        } else {
+            updateFlashcard();
+        }
+    }
+
+    function nextCard() {
+        const list = getFilteredFlashcards();
+        if(list.length === 0) return;
+        currentCardIndex = (currentCardIndex + 1) % list.length;
+        updateFlashcard();
+    }
+
+    function prevCard() {
+        const list = getFilteredFlashcards();
+        if(list.length === 0) return;
+        currentCardIndex = (currentCardIndex - 1 + list.length) % list.length;
+        updateFlashcard();
+    }
+
+    window.onload = function() {
+        initQuiz();
+        initOX();
+        updateFlashcard();
+    };
+</script>
+
+</body>
+</html>
